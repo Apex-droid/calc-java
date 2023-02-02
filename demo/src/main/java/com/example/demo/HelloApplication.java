@@ -20,7 +20,8 @@ public class HelloApplication extends Application {
     public static void main(String[] args) {
 
         launch();
-        calc("(666.666+666)*(66+6)-5*cos(6)");
+
+        //calc("(666.666+666)*(66+6)-5*cos(6)");
         //launch();
 
     }

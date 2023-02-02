@@ -1,5 +1,5 @@
 com/example/demo/Model.class
-com/example/demo/Controller.class
 module-info.class
+com/example/demo/Controller.class
 com/example/demo/HelloApplication.class
 com/example/demo/Model$Listener.class

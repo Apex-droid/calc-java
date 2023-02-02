@@ -14,7 +14,8 @@ public class expression {
     private  Stack<String> stack ;
 
     private ArrayList<Integer> x_pos ;
-    private ArrayList<String> str = new ArrayList<>();
+    private ArrayList<String> str;
+    private ArrayList<String> second_stack;
 
     private final static String scopes = "(\\()|(\\))|";
     private final static String siNco = "(cos)|(sin)";
@@ -23,7 +24,7 @@ public class expression {
     private final static String regular = scopes + digits + sings;
     private final static Pattern p = Pattern.compile(regular);
 
-    private  static Pattern half_p = Pattern.compile("Eter x:" + "(\\d+\\.?(\\d+)?)");
+    private  static Pattern half_p = Pattern.compile("Eter x: " + "(\\d+\\.?(\\d+)?)");
    private static  NavigableMap<String, Integer> priority = new TreeMap<>()
    {
        {
@@ -42,39 +43,45 @@ public class expression {
 
    expression(String to_parse){
 
-        ArrayList<String> str = new ArrayList<>();
-        Stack<String> stack = new Stack<>();
-        ArrayList<Integer> x_pos = new ArrayList<>();
-        parse(to_parse);
-
+       this.str= new ArrayList<>();
+       this.stack = new Stack<>();
+       second_stack = new ArrayList<>();
+       parse(to_parse);
    }
 
 
 
-    public  void reverse_stack(Stack<String> second_stack) {
-        int xpos = 0;
+    public  void reverse_stack() {
+        int i = second_stack.size();
 
-        while(!stack.isEmpty()) {
-            second_stack.push(stack.pop());
-            if (second_stack.peek().equals("x"))
-                x_pos.add(xpos++);
-        }
-        stack = second_stack;
-        if (!x_pos.isEmpty())
-            half_done = true;
+        while(i-- > 0)
+            stack.push(second_stack.get(i));
+        second_stack.clear();
+        //stack = second_stack;
+        //if (!x_pos.isEmpty())
+           // half_done = true;
 
     }
     public void parse_half(String for_parse) {
 
         Matcher m = half_p.matcher(for_parse);
-        if ()
-
+        if (m.matches())
+            for_parse.replaceAll("Eter x: ","");
+        for(String str: second_stack) //{
+            if (str.equals("X"))
+                str = for_parse;
+        reverse_stack();
+              //  stack.pop();
+                //stack.push(str);
+            //}
+        //}
     }
-    private  void parse(String for_parse){
+    private void parse(String for_parse){
 
-        Stack<String> second_stack = new Stack<>();
+        //ArrayList<String> second_stack = new ArrayList<>();
         Matcher m = p.matcher(for_parse);
-        second_stack.push("");
+        second_stack.add("");
+        //int inter_arr = second_stack.size() - 1;
         while (m.find())
             str.add(for_parse.substring(m.start(), m.end()));
         for (String sub: str)
@@ -82,26 +89,31 @@ public class expression {
             if(sub.matches(digits))
                 stack.push(sub);
             else if (sub.matches("(\\()")){
-                second_stack.push(sub);
+                second_stack.add(sub);
             }
             else if (sub.matches("(\\))")){
-                while(!second_stack.peek().matches("(\\()")){
-                    stack.push(second_stack.pop());
+                while(!second_stack.get(second_stack.size() - 1).matches("(\\()")){
+                    stack.push(second_stack.get(second_stack.size() - 1));
+                    second_stack.remove(second_stack.size() - 1);
                 }
-                second_stack.pop();
+                second_stack.remove(second_stack.size() - 1);
             }
             else if (sub.matches(sings)) {
-                if (priority.get(second_stack.peek()) <= priority.get(sub)){
-                    second_stack.push(sub);
+                if (priority.get(second_stack.get(second_stack.size() - 1)) <= priority.get(sub)){
+                    second_stack.add(sub);
                 }
                 else {
-                    stack.push(second_stack.pop());
-                    second_stack.push(sub);
+                    stack.push(second_stack.get(second_stack.size() - 1));
+                    second_stack.remove(second_stack.size() - 1);
+                    second_stack.add(sub);
                 }
             }
         }
-        reverse_stack(second_stack);
-        if
+        for(String str : second_stack)
+                if(str.equals("X"))
+                    half_done = true;
+             //return second_stack;
+        //reverse_stack();
     }
 
     public  double calc(/*String for_parse*/){

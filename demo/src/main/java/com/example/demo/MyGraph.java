@@ -5,7 +5,6 @@ import javafx.scene.chart.XYChart;
 import java.util.function.Function;
 
 public class MyGraph {
-
     private XYChart<Double, Double> graph;
     private double range;
 
@@ -14,10 +13,11 @@ public class MyGraph {
         this.range = range;
     }
 
-    public void plotLine(final Function<Double, Double> function) {
+    public void plotLine(Model model) {
+        model.rebuild_ex();
         final XYChart.Series<Double, Double> series = new XYChart.Series<Double, Double>();
         for (double x = -range; x <= range; x = x + 0.01) {
-            plotPoint(x, function.apply(x), series);
+            plotPoint(x, model.y_graf_func(x), series);
         }
         graph.getData().add(series);
     }
