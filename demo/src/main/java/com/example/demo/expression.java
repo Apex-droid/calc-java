@@ -5,23 +5,28 @@ import java.util.regex.Pattern;
 import java.util.regex.Matcher;
 import java.util.ArrayList;
 import java.util.Stack;
+import java.util.Collections;
 
 import static java.lang.Math.*;
 
 public class expression {
     public boolean half_done ;
 
-    private  Stack<String> stack ;
+    private   ArrayList<String> stack_list;
 
     private ArrayList<Integer> x_pos ;
     private ArrayList<String> str;
-    private ArrayList<String> second_stack;
+
+    private Stack<String> stack;
+
+    private double X;
+
 
     private final static String scopes = "(\\()|(\\))|";
     private final static String siNco = "(cos)|(sin)";
     private final static String sings = "(\\+)|(\\-)|(\\*)|(\\^)|(\\%)|(\\/)|" + siNco;
     private final static  String digits = "(\\d+\\.?(\\d+)?)|";
-    private final static String regular = scopes + digits + sings;
+    private final static String regular = scopes + digits + sings + "|(X)";
     private final static Pattern p = Pattern.compile(regular);
 
     private  static Pattern half_p = Pattern.compile("Eter x: " + "(\\d+\\.?(\\d+)?)");
@@ -45,18 +50,21 @@ public class expression {
 
        this.str= new ArrayList<>();
        this.stack = new Stack<>();
-       second_stack = new ArrayList<>();
+       this.stack_list = new ArrayList<>();
        parse(to_parse);
    }
 
 
-
+        public void get_X(double X)
+        {
+            this.X = X;
+        }
     public  void reverse_stack() {
-        int i = second_stack.size();
+        int i = stack_list.size();
 
         while(i-- > 0)
-            stack.push(second_stack.get(i));
-        second_stack.clear();
+            stack.push(stack_list.get(i));
+        stack_list.clear();
         //stack = second_stack;
         //if (!x_pos.isEmpty())
            // half_done = true;
@@ -67,17 +75,17 @@ public class expression {
         Matcher m = half_p.matcher(for_parse);
         if (m.matches())
             for_parse.replaceAll("Eter x: ","");
-        for(String str: second_stack) //{
-            if (str.equals("X"))
-                str = for_parse;
-        reverse_stack();
+        //for(String str: stack_list)
+                //Collections.replaceAll(stack_list,"X",for_parse);
+        X = Double.valueOf(for_parse);
               //  stack.pop();
                 //stack.push(str);
-            //}
-        //}
+            //
+          //}
     }
     private void parse(String for_parse){
 
+        Stack<String> second_stack = new Stack<>();
         //ArrayList<String> second_stack = new ArrayList<>();
         Matcher m = p.matcher(for_parse);
         second_stack.add("");
@@ -86,43 +94,49 @@ public class expression {
             str.add(for_parse.substring(m.start(), m.end()));
         for (String sub: str)
         {
-            if(sub.matches(digits))
-                stack.push(sub);
+            if(sub.matches(digits) || sub.matches("X"))
+                stack_list.add(sub);
             else if (sub.matches("(\\()")){
-                second_stack.add(sub);
+                second_stack.push(sub);
             }
             else if (sub.matches("(\\))")){
-                while(!second_stack.get(second_stack.size() - 1).matches("(\\()")){
-                    stack.push(second_stack.get(second_stack.size() - 1));
-                    second_stack.remove(second_stack.size() - 1);
+                while(!second_stack.peek().matches("(\\()")){
+                    stack_list.add(second_stack.pop());
                 }
-                second_stack.remove(second_stack.size() - 1);
+                second_stack.pop();
             }
             else if (sub.matches(sings)) {
-                if (priority.get(second_stack.get(second_stack.size() - 1)) <= priority.get(sub)){
-                    second_stack.add(sub);
+                if (priority.get(second_stack.peek()) <= priority.get(sub)){
+                    second_stack.push(sub);
                 }
                 else {
-                    stack.push(second_stack.get(second_stack.size() - 1));
-                    second_stack.remove(second_stack.size() - 1);
-                    second_stack.add(sub);
+                    stack_list.add(second_stack.pop());
+                    //second_stack.remove(second_stack.size() - 1);
+                    second_stack.push(sub);
                 }
             }
         }
-        for(String str : second_stack)
+        while (!second_stack.isEmpty())
+            stack_list.add(second_stack.pop());
+        for(String str : stack_list)
                 if(str.equals("X"))
                     half_done = true;
              //return second_stack;
-        //reverse_stack();
+        reverse_stack();
     }
 
-    public  double calc(/*String for_parse*/){
+    public  double calc(){
         //parse(for_parse);
         double temp;
         Stack <Double> digit_stack = new Stack<>();
+        digit_stack.push(0.0);
         while (stack.peek() != "") {
             if (stack.peek().matches(digits))
                 digit_stack.push(Double.valueOf(stack.pop()));
+            else if(stack.peek().matches("X")) {
+                digit_stack.push(X);
+                stack.pop();
+            }
             else if (stack.peek().matches(sings))
             {
                 switch (stack.pop()){
