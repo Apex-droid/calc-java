@@ -6,20 +6,23 @@ import java.util.Formatter;
 import java.util.Objects;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
-public class Model {
+public class Model extends expression {
 
-    private static expression expr;
+    //private static expression expr;
     private String text = "";
+    
     private History history = new History();
+    private int histIndex = history.size() - 1;
      Model() {
-
+    	 
+    	  
          try (FileOutputStream fileOutputStream = new FileOutputStream("C:\\Users\\ALEX\\Desktop\\save.ser");
              ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream))
          {objectOutputStream.writeObject(history);}
          catch (IOException e) {
              System.err.println("Error writing from file");
          }
-
+         
          //catch(IOException e) {
          //throw new RuntimeException(e);
 
@@ -33,17 +36,22 @@ public class Model {
     Listener listener;
 
     public void rebuild_ex() {
-        expr = new expression(text);
+        rebuild_ex(text);
     }
     public void edit(String new_txt) {                                                            
-    	if (text.equals("input error"))
+    	if (text.equals("input error "))
     		text = "";
         if (new_txt.equals("<-")){
-        	if (text.charAt(text.length()- 1) != ' ')
+        	if (!text.equals("") && text.charAt(text.length()- 1) != ' ')
         		text = StringUtils.chop(text);
         }
-        else
-            text += new_txt;
+        else {
+        	if (new_txt.matches(siNco))
+        		text += new_txt + "(";
+        	else 
+        		text += new_txt;
+        	
+        }
         if (this.listener != null)
             listener.txt_changer(text);
     }
@@ -51,20 +59,20 @@ public class Model {
         NumberFormat nf = new DecimalFormat ("0.######");
         if (inputChecker.Check(text))
         {
-        	if(expr != null && expr.half_done) {
-        		expr.parse_half(text);
+        	if(half_done) {
+        		parse_half(text);
         		history.add_op(text);
-        		text = nf.format(expr.calc());
+        		text = nf.format(calc());
         		history.add_res(text);
-        		expr.half_done = false;
+        		half_done = false;
         		save_hist();
         	}
         	else {
-        		expr = new expression(text);
-                if(!expr.half_done) {
+        		rebuild_ex(text);
+                if(!half_done) {
                 	history.add_op(text);
-                	expr.reverse_stack();
-                	text = nf.format(expr.calc());
+                	reverse_stack();
+                	text = nf.format(calc());
                 	history.add_res(text);
                 	save_hist();
                 }
@@ -77,9 +85,9 @@ public class Model {
         listener.txt_changer(text);
     }
     public double y_graf_func(double x) {
-        rebuild_ex();
-        expr.get_X(x);
-        return (expr.calc());
+        rebuild_ex(text);
+        get_X(x);
+        return (calc());
     }
     public boolean isHistEmpty() {
         if (history.size() == 0)
@@ -101,7 +109,27 @@ public class Model {
     }
 
     public String[] history_array() {
+    	
         return history.result_array();
+    }
+    
+    private void takeHistoryUp() {
+    	
+    	text = history.get_operation(histIndex);
+    	histIndex--;
+    	if (histIndex < 0)
+    		histIndex = history.size();
+    	if (this.listener != null)
+            listener.txt_changer(text);
+    }
+ private void takeHistoryDown() {
+    	
+    	text = history.get_operation(histIndex);
+    	histIndex++;
+    	if (histIndex == history.size())
+    		histIndex = 0;
+    	if (this.listener != null)
+            listener.txt_changer(text);
     }
 
 }

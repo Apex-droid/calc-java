@@ -19,14 +19,14 @@ public class expression {
     private double X;
 
 
-    private final static String scopes = "(\\()|(\\))|";
-    private final static String siNco = "(cos)|(sin)|(asin)|(acos)|(tan)|(atan)|(ln)|(log)|(sqrt)";
-    private final static String sings = "(\\+)|(\\-)|(\\*)|(\\^)|(\\%)|(\\/)|" + siNco;
-    private final static  String digits = "(\\d+\\.?(\\d+)?)|";
-    private final static String regular = scopes + digits + sings + "|(X)";
-    private final static Pattern p = Pattern.compile(regular);
+    protected final static String scopes = "(\\()|(\\))|";
+    protected final static String siNco = "(cos)|(sin)|(asin)|(acos)|(tan)|(atan)|(ln)|(log)|(sqrt)";
+    protected final static String sings = "(\\+)|(\\-)|(\\*)|(\\^)|(\\%)|(\\/)|" + siNco;
+    protected final static String digits = "(\\d+\\.?(\\d+)?)|";
+    protected final static String regular = scopes + digits + sings + "|(X)";
+    protected final static Pattern p = Pattern.compile(regular);
 
-    private  static Pattern half_p = Pattern.compile("enter x: " + "(\\d+\\.?(\\d+)?)");
+   private  static Pattern half_p = Pattern.compile("enter x: " + "(\\d+\\.?(\\d+)?)");
    private static  NavigableMap<String, Integer> priority = new TreeMap<String,Integer>()
    {
        private static final long serialVersionUID = 1L;
@@ -54,13 +54,13 @@ public class expression {
        }
    };
 
-   expression(String to_parse){
-
-       this.str= new ArrayList<>();
-       this.stack = new Stack<>();
-       this.stack_list = new ArrayList<>();
+   public void rebuild_ex(String to_parse){
+       this.str.clear();
+       this.stack.clear();
+       this.stack_list.clear();
        parse(to_parse);
    }
+   
    expression() {
        this.str= new ArrayList<>();
        this.stack = new Stack<>();
@@ -105,7 +105,7 @@ public class expression {
             second_stack.push(sign);
         }
     }
-    private void parse(String for_parse){
+    protected void parse(String for_parse){
 
         Stack<String> second_stack = new Stack<>();
         //ArrayList<String> second_stack = new ArrayList<>();
@@ -130,6 +130,8 @@ public class expression {
             else if (str.get(i).matches(sings)) {
                 if(str.get(i).matches("-") && !(str.get(i - 1).matches(digits) || str.get(i - 1).matches("(\\))")))
                     sign_sort("u", second_stack);
+                else if(str.get(i).matches("\\+") && !(str.get(i - 1).matches(digits) || str.get(i - 1).matches("(\\))")))
+                    sign_sort("U", second_stack);
                 else
                     sign_sort(str.get(i), second_stack);
             }
@@ -167,6 +169,8 @@ public class expression {
                         break;
                     case "u":
                         digit_stack.push(-digit_stack.pop());
+                        break;
+                    case "U":
                         break;
                     case "/":
                         temp = digit_stack.pop();

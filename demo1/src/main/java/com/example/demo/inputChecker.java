@@ -25,7 +25,9 @@ public class inputChecker {
 	private static String three_lpE = lp_sign + lp_sign + lp_sign  ;
 	private static String ExpRegex = lpSingE +  "|" + hpSingE +  "|" + DDE +  
 	"|" + DE +  "|" + XE +  "|" + scopeOE 
-	+ "|" + scopeCE + "|" + powE + "|" + three_lpE;
+	+ "|" + scopeCE + "|" + powE + "|" + three_lpE ;
+	private static Pattern p = Pattern.compile(ExpRegex);
+	
 	public static boolean scopeCheck(String exp)
 	{
 		for(int i = 0; i < exp.length(); i++)
@@ -44,8 +46,9 @@ public class inputChecker {
 	
 	public static boolean Check(String exp)
 	{
+		Matcher m = p.matcher(exp);
 		if (scopeCheck(exp)){
-			if (exp.matches(ExpRegex))
+			if (m.find())
 				return false;
 			return true;
 		}
