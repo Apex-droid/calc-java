@@ -86,7 +86,6 @@ public class Controller {
     	
         if (hist_pr == false && !model.isHistEmpty()) {
             history = new ListView<>();
-            //history.autosize();
             history.applyCss();
             history.setMaxHeight(570);
             history.getItems().addAll(model.history_array());
