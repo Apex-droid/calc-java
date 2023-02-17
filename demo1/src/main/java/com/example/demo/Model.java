@@ -32,40 +32,48 @@ public class Model {
 
     Listener listener;
 
-    public void rebuild_ex()
-    {
+    public void rebuild_ex() {
         expr = new expression(text);
     }
-    public void edit(String new_txt) {
-        if (new_txt.equals("<-"))
-            text = StringUtils.chop(text);
+    public void edit(String new_txt) {                                                            
+    	if (text.equals("input error"))
+    		text = "";
+        if (new_txt.equals("<-")){
+        	if (text.charAt(text.length()- 1) != ' ')
+        		text = StringUtils.chop(text);
+        }
         else
             text += new_txt;
         if (this.listener != null)
             listener.txt_changer(text);
     }
     public void enter()  {
-        NumberFormat nf = new DecimalFormat("0.######");
-        if(expr != null && expr.half_done) {
-            expr.parse_half(text);
-            history.add_op(text);
-            text = nf.format(expr.calc());
-            history.add_res(text);
-            expr.half_done = false;
-            save_hist();
-        }
-        else {
-            expr = new expression(text);
+        NumberFormat nf = new DecimalFormat ("0.######");
+        if (inputChecker.Check(text))
+        {
+        	if(expr != null && expr.half_done) {
+        		expr.parse_half(text);
+        		history.add_op(text);
+        		text = nf.format(expr.calc());
+        		history.add_res(text);
+        		expr.half_done = false;
+        		save_hist();
+        	}
+        	else {
+        		expr = new expression(text);
                 if(!expr.half_done) {
-                    history.add_op(text);
-                    expr.reverse_stack();
-                    text = nf.format(expr.calc());
-                    history.add_res(text);
-                    save_hist();
+                	history.add_op(text);
+                	expr.reverse_stack();
+                	text = nf.format(expr.calc());
+                	history.add_res(text);
+                	save_hist();
                 }
                 else
                     text = "enter x: ";
+        	}
         }
+        else
+        	text = "input error ";
         listener.txt_changer(text);
     }
     public double y_graf_func(double x) {
