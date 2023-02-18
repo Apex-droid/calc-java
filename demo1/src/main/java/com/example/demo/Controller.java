@@ -8,6 +8,7 @@ import javafx.scene.Scene;
 import javafx.scene.chart.AreaChart;
 import javafx.scene.chart.LineChart;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -22,8 +23,8 @@ public class Controller {
 
     public boolean hist_pr = false;
     public HBox Hbox;
-    public Text output;
-    private Stage stage;
+    public Label output;
+   private Stage stage;
     //private Scene scene;
     public void switchToScene1(ActionEvent event) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("hello-view.fxml"));
@@ -81,16 +82,24 @@ public class Controller {
     private Button clearButton;
     @FXML
     private void show_history(ActionEvent event) {
-
+    	
+    	stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+    	
         if (hist_pr == false && !model.isHistEmpty()) {
             history = new ListView<>();
+            history.applyCss();
+            history.setMaxHeight(570);
             history.getItems().addAll(model.history_array());
             Hbox.getChildren().add(history);
+            stage.setMinWidth(700);
+            stage.setMaxWidth(700);
             hist_pr = true;
         }
         else {
             Hbox.getChildren().remove(history);
             hist_pr = false;
+            stage.setMinWidth(483);
+            stage.setMaxWidth(483);
         }
 
 
