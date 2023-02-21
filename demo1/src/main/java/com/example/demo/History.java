@@ -32,4 +32,8 @@ public class History implements Serializable {
     {
         return size;
     }
+    public String get_operation(int i)
+    {
+    	return (operations.get(i));
+    }
 }

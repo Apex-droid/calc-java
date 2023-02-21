@@ -1,5 +1,5 @@
 package com.example.demo;
-import javafx.event.ActionEvent;
+
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -9,6 +9,7 @@ import javafx.scene.chart.AreaChart;
 import javafx.scene.chart.LineChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
@@ -22,13 +23,13 @@ public class Controller {
 
     public boolean hist_pr = false;
     public HBox Hbox;
-    public Text output;
-    private Stage stage;
+    public TextField output;
+   private Stage stage;
     //private Scene scene;
     public void switchToScene1(ActionEvent event) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("hello-view.fxml"));
 
-        Scene scene = new Scene(fxmlLoader.load(), 320, 240);
+        Scene scene = new Scene((Parent) fxmlLoader.load(), 320, 240);
         stage.setTitle("Hello!");
         stage.setScene(scene);
         stage.show();
@@ -81,16 +82,24 @@ public class Controller {
     private Button clearButton;
     @FXML
     private void show_history(ActionEvent event) {
-
+    	
+    	stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+    	
         if (hist_pr == false && !model.isHistEmpty()) {
             history = new ListView<>();
+            history.applyCss();
+            history.setMaxHeight(570);
             history.getItems().addAll(model.history_array());
             Hbox.getChildren().add(history);
+            stage.setMinWidth(700);
+            stage.setMaxWidth(700);
             hist_pr = true;
         }
         else {
             Hbox.getChildren().remove(history);
             hist_pr = false;
+            stage.setMinWidth(483);
+            stage.setMaxWidth(483);
         }
 
 
