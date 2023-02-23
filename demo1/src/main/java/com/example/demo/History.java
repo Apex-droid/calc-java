@@ -6,6 +6,10 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.collections.transformation.SortedList;
+
 public class History implements Serializable {
 
     History() {
@@ -24,12 +28,16 @@ public class History implements Serializable {
     public void clear(){
         operations.clear();
         results.clear();
+        size = 0;
     }
     public String[] result_array() {
-        return (results.toArray(new String[0]));
+        return (String[]) (results.toArray(new String[0]));
     }
-    int size()
-    {
+    int size(){
         return size;
     }
+    public String get_operation(int i){
+    	return (operations.get(i));
+    }
+   
 }
