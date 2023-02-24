@@ -23,9 +23,12 @@ public class inputChecker {
 	"|" + sin_co + ")";
 	private static String powE = "(\\^)" +  "(" + hp_sign +  "|" + lp_sign  + "|(\\^)" + "|" + scopeC + ")";
 	private static String three_lpE = lp_sign + lp_sign + lp_sign  ;
+	private static String end = hp_sign +  "|" + lp_sign + "|" + scopeO + "|" + sin_co +  "$";
+	private static String begin =  "(?<=^)(" + hp_sign +  "|" + scopeC + ")";
 	private static String ExpRegex = lpSingE +  "|" + hpSingE +  "|" + DDE +  
 	"|" + DE +  "|" + XE +  "|" + scopeOE 
 	+ "|" + scopeCE + "|" + powE + "|" + three_lpE ;
+	
 	private static Pattern p = Pattern.compile(ExpRegex);
 	private static Pattern liters = Pattern.compile("[a-z]");
 	

@@ -40,7 +40,8 @@ public class Model extends expression {
     public void rebuild_ex() {
         rebuild_ex(text);
     }
-    public void edit(String new_txt) {                                                            
+    public void edit(String new_txt) {
+    	int textlen = text.length();
     	if (text.equals("input error "))
     		text = "";
         if (new_txt.equals("<-")){
@@ -48,14 +49,19 @@ public class Model extends expression {
         		text = StringUtils.chop(text);
         }
         else {
-        	if (new_txt.matches(siNco))
+        	if (new_txt.matches(siNco) && (new_txt.length() + text.length()) < 255)
         		text += new_txt + "(";
-        	else 
+        	else if((new_txt.length() + text.length()) < 256)
         		text += new_txt;
         	
         }
         if (this.listener != null)
             listener.txt_changer(text);
+    }
+    public void clean(){
+    	text = "";
+    	 if (this.listener != null)
+             listener.txt_changer(text);
     }
     public void enter()  {
         NumberFormat nf = new DecimalFormat ("0.######");
@@ -119,9 +125,9 @@ public class Model extends expression {
     		text = history.get_operation(histIndex);
     		histIndex--;
     		if (histIndex < 0)
-    		histIndex = history.size() - 1;
+    			histIndex = history.size() - 1;
     		if (this.listener != null)
-            listener.txt_changer(text);
+    			listener.txt_changer(text);
     	}
     }
  public void takeHistoryDown() {
@@ -149,6 +155,9 @@ public void HistoryClear() {
 public String[] result_array() {
 	// TODO Auto-generated method stub
 	return (history.result_array());
+}
+public String getTxt() {
+	return text;
 }
 	
 

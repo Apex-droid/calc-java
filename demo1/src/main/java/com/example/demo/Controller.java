@@ -5,6 +5,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -24,13 +25,15 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class Controller {
+public class Controller implements Initializable {
 
-    public boolean hist_pr = false;
-    public HBox Hbox;
-    public Label output;
-   private Stage stage;
-   
+   public boolean hist_pr = false;
+   @FXML
+   public HBox Hbox;
+   @FXML
+   public Label output;
+   public Stage stage;
+   public static Model model = new Model();
    
    private class MyListCell extends ListCell<String> {
        public MyListCell() {
@@ -39,17 +42,31 @@ public class Controller {
            setSkin(createDefaultSkin());
        }
    }
+   @FXML
     //private Scene scene;
     public void switchToScene1(ActionEvent event) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("hello-view.fxml"));
-
-        Scene scene = new Scene(fxmlLoader.load(), 320, 240);
-        stage.setTitle("Hello!");
-        stage.setScene(scene);
+	   FXMLLoader loader = new FXMLLoader(getClass().getResource("hello-view.fxml"));	   	
+    	Parent root = loader.load();
+    	Controller controller = loader.getController();
+    	stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+    	stage.setScene(new Scene(root));
+        stage.setTitle("some calculator");  
+        stage.getMinWidth();
+        stage.setHeight(640);
+        stage.setWidth(483);
+        stage.setMaxHeight(640);
+        stage.setMinHeight(640);
+        stage.setMinWidth(483);
         stage.show();
+        controller.output.setText(controller.model.getTxt());
     }
+    @FXML
+    public void initialize() {
+        output.setText(model.getTxt());
+    }
+    @FXML
     public void switchToScene2(ActionEvent event) throws IOException {
-        Parent root = FXMLLoader.load(Controller.class.getResource("hello-view1.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("hello-view1.fxml"));
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
         stage.setScene(new Scene(root));
         stage.setTitle("some Graph");
@@ -74,9 +91,6 @@ public class Controller {
       //  if (model == null)
         //    model =  new Model();
     //}
-    private static Model model = new Model();
-
-
 
     @FXML
     private LineChart<Double, Double> lineGraph;
@@ -186,8 +200,8 @@ public class Controller {
     @FXML
     public void graficButton(final ActionEvent button){
         //initialize();
-        mathsGraph = new MyGraph(lineGraph, 10);
-        areaMathsGraph = new MyGraph(areaGraph, 10);
+        mathsGraph = new MyGraph(lineGraph, 1000000);
+        areaMathsGraph = new MyGraph(areaGraph, 1000000);
         areaMathsGraph.plotLine(model);
     }
     @FXML 
@@ -225,6 +239,10 @@ public class Controller {
 	   model.HistoryClear();
 	   
    }
+   protected void clear(ActionEvent event){
+	   model.clean();   
+   }
+   
 
 
 }
