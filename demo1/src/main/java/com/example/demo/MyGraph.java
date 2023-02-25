@@ -15,6 +15,7 @@ public class MyGraph {
 
     public void plotLine(Model model) {
         model.rebuild_ex();
+        //model.half_done = true;
         final XYChart.Series<Double, Double> series = new XYChart.Series<Double, Double>();
         for (double x = -range; x <= range; x = x + 1000) {
             plotPoint(x, model.y_graf_func(x), series);

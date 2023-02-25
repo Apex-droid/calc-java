@@ -16,17 +16,18 @@ public class expression {
 
     private Stack<String> stack;
 
-    private double X;
+    protected double X;
 
 
     protected final static String scopes = "(\\()|(\\))|";
     protected final static String siNco = "(cos)|(sin)|(asin)|(acos)|(tan)|(atan)|(ln)|(log)|(sqrt)";
     protected final static String sings = "(\\+)|(\\-)|(\\*)|(\\^)|(\\%)|(\\/)|" + siNco;
     protected final static String digits = "(\\d+\\.?(\\d+)?)|";
+    protected final static String digit = "(\\d+\\.?(\\d+)?)";
     protected final static String regular = scopes + digits + sings + "|(X)";
     protected final static Pattern p = Pattern.compile(regular);
 
-   private  static Pattern half_p = Pattern.compile("enter x: " + "(\\d+\\.?(\\d+)?)");
+   
    private static  NavigableMap<String, Integer> priority = new TreeMap<String,Integer>()
    {
        private static final long serialVersionUID = 1L;
@@ -58,11 +59,12 @@ public class expression {
        this.str.clear();
        this.stack.clear();
        this.stack_list.clear();
+       half_done = false; 
        parse(to_parse);
    }
    
    expression() {
-       this.str= new ArrayList<>();
+       this.str = new ArrayList<>();
        this.stack = new Stack<>();
        this.stack_list = new ArrayList<>();
    }
@@ -76,7 +78,7 @@ public class expression {
 
         while(i-- > 0)
             stack.push(stack_list.get(i));
-        stack_list.clear();
+        //stack_list.clear();
         //stack = second_stack;
         //if (!x_pos.isEmpty())
            // half_done = true;
@@ -85,13 +87,12 @@ public class expression {
     public void parse_half(String for_parse) {
 
 
-       String somestr = new String();
-        Matcher m = half_p.matcher(for_parse);
-        if (m.matches())
-           somestr = for_parse.replaceAll("enter x: ", "");
-        //for(String str: stack_list)
-                //Collections.replaceAll(stack_list,"X",for_parse);
-        X = Double.valueOf(somestr);
+       String substr = new String();
+       Pattern dig = Pattern.compile(digit);
+       Matcher m = dig.matcher(for_parse);
+       while(m.find())
+    	   substr = for_parse.substring(m.start(), m.end());
+        X = Double.valueOf(substr);
               //  stack.pop();
                 //stack.push(str);
             //
@@ -138,13 +139,18 @@ public class expression {
         }
         while (!second_stack.isEmpty())
             stack_list.add(second_stack.pop());
-        for(String str : stack_list)
-                if(str.equals("X"))
-                    half_done = true;
+       //X_pre();
              //return second_stack;
         reverse_stack();
     }
 
+    
+    protected  void  X_pre() {
+    	 for(String str : stack_list)
+             if(str.equals("X"))
+                 half_done = true;
+    }
+    
     public  double calc(){
         //parse(for_parse);
         double temp;

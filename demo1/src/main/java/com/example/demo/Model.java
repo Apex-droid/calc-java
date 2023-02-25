@@ -65,21 +65,26 @@ public class Model extends expression {
     }
     public void enter()  {
         NumberFormat nf = new DecimalFormat ("0.######");
-        if (inputChecker.Check(text))
-        {
+       
+        
         	if(half_done) {
+        		if(inputChecker.halfCheck(text)) {
         		parse_half(text);
-        		history.add_op(text);
+        		//history.add_op(text);
         		text = nf.format(calc());
-        		history.add_res(text);
-        		histIndex =history.size() - 1;
+        		history.add_res(text + "\nwhen X = " + X);
+        		histIndex = history.size() - 1;
         		half_done = false;
         		save_hist();
+        		}
+        		else
+        			text = "input error\n try other x: "; 
         	}
-        	else {
+        	else  if (inputChecker.Check(text)){
         		rebuild_ex(text);
+        		X_pre();
+        		history.add_op(text);
                 if(!half_done) {
-                	history.add_op(text);
                 	reverse_stack();
                 	text = nf.format(calc());
                 	history.add_res(text);
@@ -89,13 +94,13 @@ public class Model extends expression {
                 else
                     text = "enter x: ";
         	}
-        }
-        else
-        	text = "input error ";
+        	else
+            	text = "input error ";
+        
         listener.txt_changer(text);
     }
     public double y_graf_func(double x) {
-        rebuild_ex(text);
+        reverse_stack();
         get_X(x);
         return (calc());
     }

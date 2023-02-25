@@ -10,7 +10,7 @@ public class inputChecker {
 	private static Stack<Character> scope_stack = new Stack<>(); 
 	private static String scopeO ="(\\()";
 	private static String scopeC = "(\\))";
-	private static String hp_sign =  "((\\*)|(\\/)|(//%))";
+	private static String hp_sign =  "((\\*)|(\\/)|(\\%))";
 	private static String lp_sign = "((\\+)|(\\-))";
 	private static String sin_co = " ((cos)|(sin)|(asin)|(acos)|(tan)|(atan)|(ln)|(log)|(sqrt))";
 	private static String lpSingE = lp_sign + "(" + scopeC + "|" +  hp_sign + "|" +  "(\\^)" + ")";
@@ -23,13 +23,14 @@ public class inputChecker {
 	"|" + sin_co + ")";
 	private static String powE = "(\\^)" +  "(" + hp_sign +  "|" + lp_sign  + "|(\\^)" + "|" + scopeC + ")";
 	private static String three_lpE = lp_sign + lp_sign + lp_sign  ;
-	private static String end = hp_sign +  "|" + lp_sign + "|" + scopeO + "|" + sin_co +  "$";
+	private static String end = "^(.+?(" + hp_sign +  "|" + lp_sign + "|" + scopeO + "|" + sin_co +  "))$";
 	private static String begin =  "(?<=^)(" + hp_sign +  "|" + scopeC + ")";
 	private static String ExpRegex = lpSingE +  "|" + hpSingE +  "|" + DDE +  
-	"|" + DE +  "|" + XE +  "|" + scopeOE 
+	"|" + DE +  "|" + XE +  "|" + scopeOE + "|" + end + "|" + begin 
 	+ "|" + scopeCE + "|" + powE + "|" + three_lpE ;
 	
 	private static Pattern p = Pattern.compile(ExpRegex);
+	private  static Pattern half_p = Pattern.compile("((enter x: )|(input error\n try other x: ))" + "(\\d+\\.?(\\d+)?)");
 	private static Pattern liters = Pattern.compile("[a-z]");
 	
 	public static boolean scopeCheck(String exp)
@@ -62,5 +63,11 @@ public class inputChecker {
 		}
 		else 
 			return false;
+	}
+	public static boolean halfCheck(String exp){
+		 Matcher m = half_p.matcher(exp);
+	        if (m.matches())
+	        	return true;
+	        return false;
 	}
 }

@@ -58,6 +58,7 @@ public class Controller implements Initializable {
         stage.setMinHeight(640);
         stage.setMinWidth(483);
         stage.show();
+   
         controller.output.setText(controller.model.getTxt());
     }
     @FXML
@@ -143,7 +144,6 @@ public class Controller implements Initializable {
                         setGraphic(null);
                         setText(null); 
                         // other stuff to do...
-
                     }else{
 
                         // set the width's
@@ -188,6 +188,7 @@ public class Controller implements Initializable {
 
     @FXML
     protected void operator(ActionEvent event){
+    	model.listener = txt -> output.setText(txt);
         model.enter();
     }
 
