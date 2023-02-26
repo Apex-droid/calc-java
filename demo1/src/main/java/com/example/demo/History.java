@@ -12,7 +12,11 @@ import javafx.collections.transformation.SortedList;
 
 public class History implements Serializable {
 
-    History() {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 4535807739056886842L;
+	History() {
         size = 0;
     }
     private int size;

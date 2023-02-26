@@ -1,6 +1,6 @@
 package com.example.demo;
 import org.apache.commons.lang3.StringUtils;
-
+import java.nio.file.Path; 
 import javafx.collections.ObservableArray;
 
 import java.io.*;
@@ -14,28 +14,40 @@ public class Model extends expression {
     private String text = "";
     
     private History history = new History();
-    private int histIndex = history.size() - 1;
+    private int histIndex;
      Model() {
-    	 
-    	  
-         try (FileOutputStream fileOutputStream = new FileOutputStream("C:\\Users\\ALEX\\Desktop\\save.ser");
-             ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream))
-         {objectOutputStream.writeObject(history);}
-         catch (IOException e) {
-             System.err.println("Error writing from file");
-         }
-         
+    	 File file = new File("/Users/ahelper/Documents/save.ser");
+    	  if (file.exists() && !file.isDirectory())
+    	 try (FileInputStream fileInputStream = new FileInputStream("/Users/ahelper/Documents/save.ser");
+                 ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream))
+            { history = (History) objectInputStream.readObject();}
+            catch (IOException | ClassNotFoundException e) {
+                System.err.println("Error writing from file");
+            }
+		else
+			try {
+				file.createNewFile();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				System.err.println("Error of file creating");
+			}
+    	  histIndex = history.size() - 1;
          //catch(IOException e) {
          //throw new RuntimeException(e);
-
      }
 
     interface Listener {
          void txt_changer(String txt);
+         //void xen_method();
     }
+    interface xenListener {
+        //void txt_changer(String txt);
+        void xen_method();
+   }
 
 
     Listener listener;
+    xenListener listener2;
 
     public void rebuild_ex() {
         rebuild_ex(text);
@@ -60,6 +72,17 @@ public class Model extends expression {
     }
     public void clean(){
     	text = "";
+    	 if (this.listener != null)
+             listener.txt_changer(text);
+    }
+    public void unknown_with_checking()
+    {
+    	if (inputChecker.Check(text)){
+    		if(listener2 != null)
+    		listener2.xen_method();
+    	}
+    	else
+        	text = "input error ";
     	 if (this.listener != null)
              listener.txt_changer(text);
     }
@@ -115,10 +138,11 @@ public class Model extends expression {
         //FileInputStream fileInputStream = new FileInputStream("C:\\Users\\Username\\Desktop\\save.ser");
         //ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
         //History savedGame = (History) objectInputStream.readObject();
-        try (FileInputStream fileInputStream = new FileInputStream("\\Users\\ahelper\\Desktop\\save.ser");
-             ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream))
-        {History savedGame = (History) objectInputStream.readObject();}
-        catch (IOException | ClassNotFoundException e) {
+    	 
+        try (FileOutputStream fileOutputStream = new FileOutputStream("/Users/ahelper/Documents/save.ser");
+            ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream))
+        {objectOutputStream.writeObject(history);}
+        catch (IOException e) {
             System.err.println("save error");
         }
     }
@@ -155,6 +179,7 @@ public void expFromHist(int histIndex) {
 public void HistoryClear() {
 	history.clear();
 	histIndex = 0;
+	save_hist();
 }
 	// TODO Auto-generated method stub
 public String[] result_array() {

@@ -67,11 +67,25 @@ public class Controller implements Initializable {
     }
     @FXML
     public void switchToScene2(ActionEvent event) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("hello-view1.fxml"));
+    	model.listener2 = ()->{
+        Parent root = null;
+		try {
+			root = FXMLLoader.load(getClass().getResource("hello-view1.fxml"));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			System.err.println("Switch scene error");
+		}
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
         stage.setScene(new Scene(root));
         stage.setTitle("some Graph");
-        stage.show();
+        stage.setHeight(600);
+        stage.setWidth(700);
+        stage.setMaxHeight(600);
+        stage.setMinHeight(600);
+        stage.setMinWidth(700);
+        stage.setMaxWidth(700);
+        stage.show();};
+        model.unknown_with_checking();
     }
     private void setPreferredWidth(ObservableList<String> items) {
     	 ListCell<String> cell = new MyListCell();
@@ -123,8 +137,6 @@ public class Controller implements Initializable {
     @FXML
     private ListView<String> history;
     @FXML
-    private Button clearButton;
-    @FXML
     private void show_history(ActionEvent event) {
     	
     	stage = (Stage)((Node)event.getSource()).getScene().getWindow();
@@ -170,7 +182,7 @@ public class Controller implements Initializable {
             setPreferredWidth(history.getItems());
             Hbox.getChildren().add(history);
             stage.setMinWidth(500 + history.getMaxWidth());
-            //stage.setMaxWidth(500 + history.getWidth());
+            stage.setMaxWidth(500 + history.getMaxWidth());
             //stage.setMaxWidth(700);
             hist_pr = true;
         }
@@ -178,7 +190,8 @@ public class Controller implements Initializable {
             Hbox.getChildren().remove(history);
             hist_pr = false;
             stage.setMinWidth(483);
-            //stage.setMaxWidth(483);
+            stage.setMaxWidth(483);
+            stage.setWidth(483);
         }
 
 
@@ -217,8 +230,7 @@ public class Controller implements Initializable {
     	
     }
    @FXML 
-   protected void takeHistoryUp(ActionEvent event)
-   {
+   protected void takeHistoryUp(ActionEvent event){
 	   model.listener = txt -> {
            output.setText(txt);
        };
@@ -226,21 +238,23 @@ public class Controller implements Initializable {
 	   
    }
    @FXML
-   protected void takeHistoryDown(ActionEvent event)
-   {
+   protected void takeHistoryDown(ActionEvent event){
 	   model.listener = txt -> {
            output.setText(txt);
        };
-       model.takeHistoryUp();
+       model.takeHistoryDown();
 	   
    }
    @FXML
-   protected void clearHistory(ActionEvent event)
-   {
+   protected void clearHistory(ActionEvent event){
 	   model.HistoryClear();
-	   
    }
+   @FXML
    protected void clear(ActionEvent event){
+	   
+	   model.listener = txt -> {
+           output.setText(txt);
+       };
 	   model.clean();   
    }
    

@@ -11,7 +11,7 @@
 <?import javafx.scene.effect.SepiaTone?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane id="shiny" maxHeight="642.0" maxWidth="727.0" minHeight="400.0" minWidth="526.0" prefHeight="572.0" prefWidth="727.0" stylesheets="@stylesheet.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo.Controller">
+<AnchorPane id="shiny" prefHeight="574.0" prefWidth="700.0" stylesheets="@stylesheet.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo.Controller">
     <children>
         <AnchorPane blendMode="SRC_ATOP" layoutX="-10.0" layoutY="-39.0">
             <children>
@@ -29,7 +29,7 @@
                   <ColorInput paint="#401414" />
                </effect>
                 </LineChart>
-            <AreaChart id="dark" fx:id="areaGraph" alternativeColumnFillVisible="true" cacheShape="false" centerShape="false" layoutX="79.0" layoutY="51.0" legendVisible="false" prefHeight="439.0" prefWidth="579.0">
+            <AreaChart id="dark" fx:id="areaGraph" alternativeColumnFillVisible="true" cacheShape="false" centerShape="false" layoutX="70.0" layoutY="52.0" legendVisible="false" prefHeight="439.0" prefWidth="579.0">
                <xAxis>
                   <NumberAxis autoRanging="false" cacheShape="false" centerShape="false" disable="true" lowerBound="-1000000.0" scaleShape="false" tickLabelFill="#69b909" tickLabelGap="10.0" tickLength="10.0" tickUnit="100000.0" upperBound="1000000.0">
                      <effect>
@@ -53,8 +53,8 @@
                   </BoxBlur>
                </effect>
             </AreaChart>
-                <Button id="yellow" fx:id="lineGraphButton" layoutX="147.0" layoutY="505.0" mnemonicParsing="false" onAction="#graficButton" prefHeight="65.0" prefWidth="183.0" stylesheets="@stylesheet.css" text="show Graph" />
-            <Button id="yellow" fx:id="lineGraphButton1" layoutX="424.0" layoutY="505.0" mnemonicParsing="false" onAction="#switchToScene1" prefHeight="65.0" prefWidth="183.0" stylesheets="@stylesheet.css" text="to calculator" />
+                <Button id="yellow" fx:id="lineGraphButton" layoutX="131.0" layoutY="519.0" mnemonicParsing="false" onAction="#graficButton" prefHeight="65.0" prefWidth="183.0" stylesheets="@stylesheet.css" text="show Graph" />
+            <Button id="yellow" fx:id="lineGraphButton1" layoutX="416.0" layoutY="519.0" mnemonicParsing="false" onAction="#switchToScene1" prefHeight="65.0" prefWidth="183.0" stylesheets="@stylesheet.css" text="to calculator" />
             </children>
         </AnchorPane>
 

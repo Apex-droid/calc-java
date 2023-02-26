@@ -33,24 +33,25 @@ public class expression {
        private static final long serialVersionUID = 1L;
 
 	{
-           put("(",0);
+           put("(", 0);
            put("", 0);
            put("+", 1);
            put("-", 1);
-           put("u", 1);
            put("*", 2);
            put("/", 2);
            put("%", 2);
            put("^", 3);
-           put("cos", 4);
-           put("sin", 4);
-           put("asin",4);
-           put("acos",4);
-           put("tan",4);
-           put("atan",4);
-           put("ln",4);
-           put("log",4);
-           put("sqrt",4);
+           put("u", 4);
+           put("U", 4);
+           put("cos", 5);
+           put("sin", 5);
+           put("asin", 5);
+           put("acos", 5);
+           put("tan", 5);
+           put("atan", 5);
+           put("ln", 5);
+           put("log", 5);
+           put("sqrt", 5);
 
        }
    };
