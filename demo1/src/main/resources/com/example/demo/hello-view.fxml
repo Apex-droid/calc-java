@@ -12,18 +12,18 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<HBox id="shiny" fx:id="Hbox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="590.0" minWidth="483.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="590.0" prefWidth="483.0" stylesheets="@stylesheet.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo.Controller">
+<HBox id="shiny" fx:id="Hbox" minHeight="590.0" minWidth="483.0" nodeOrientation="LEFT_TO_RIGHT" stylesheets="@stylesheet.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo.Controller">
     <children>
         <VBox id="dark" maxHeight="570.0" maxWidth="440.0" minHeight="570.0" minWidth="440.0">
             <children>
                 <StackPane prefHeight="292.0" prefWidth="400.0" VBox.vgrow="ALWAYS">
                <children>
-                  <Label id="greenn" fx:id="output" accessibleRole="COMBO_BOX" alignment="CENTER" contentDisplay="TEXT_ONLY" depthTest="DISABLE" graphicTextGap="0.0" lineSpacing="4.0" maxWidth="-Infinity" prefHeight="220.0" prefWidth="348.0" stylesheets="@stylesheet.css" text="lkjkjkjkljkljkljkljkljkjkjkjkjkjkjkjkjkjkjkjkjkj" textAlignment="CENTER" wrapText="true" StackPane.alignment="CENTER">
+                  <Label id="greenn" fx:id="output" accessibleRole="COMBO_BOX" alignment="CENTER" contentDisplay="TEXT_ONLY" depthTest="DISABLE" graphicTextGap="0.0" lineSpacing="0.3" maxWidth="-Infinity" prefHeight="220.0" prefWidth="348.0" stylesheets="@stylesheet.css" text="let's do some calculation" textAlignment="CENTER" wrapText="true" StackPane.alignment="CENTER">
                      <effect>
                         <Glow />
                      </effect>
                      <font>
-                        <Font size="24.0" />
+                        <Font size="17.0" />
                      </font>
                      <StackPane.margin>
                         <Insets />
@@ -53,6 +53,7 @@
                         <RowConstraints maxHeight="50.0" minHeight="50.0" vgrow="SOMETIMES" />
                         <RowConstraints maxHeight="50.0" minHeight="50.0" vgrow="SOMETIMES" />
                         <RowConstraints maxHeight="50.0" minHeight="50.0" prefHeight="58.39999999999998" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="50.0" minHeight="50.0" prefHeight="58.39999999999998" vgrow="SOMETIMES" />
                     </rowConstraints>
                     <children>
                         <Button id="green" alignment="CENTER" blendMode="SRC_ATOP" mnemonicParsing="false" onAction="#num" prefHeight="45.0" prefWidth="45.0" stylesheets="@stylesheet.css" text="X" GridPane.columnIndex="4" GridPane.rowIndex="4">
@@ -67,7 +68,7 @@
                             <font>
                                 <Font name="Arial Black" size="12.0" />
                             </font></Button>
-                        <Button id="green" alignment="CENTER" blendMode="SRC_ATOP" mnemonicParsing="false" prefHeight="45.0" prefWidth="50.0" stylesheets="@stylesheet.css" text="C" GridPane.columnIndex="2">
+                        <Button id="green" alignment="CENTER" blendMode="SRC_ATOP" mnemonicParsing="false" onAction="#clear" prefHeight="45.0" prefWidth="50.0" stylesheets="@stylesheet.css" text="C" GridPane.columnIndex="2">
                             <font>
                                 <Font size="21.0" />
                             </font></Button>
@@ -215,6 +216,26 @@
                                 <Font name="Arial Black" size="12.0" />
                             </font>
                         </Button>
+                  <Button id="green" alignment="CENTER" blendMode="SRC_ATOP" layoutX="136.0" layoutY="213.0" mnemonicParsing="false" onAction="#takeHistoryUp" prefHeight="45.0" prefWidth="50.0" stylesheets="@stylesheet.css" text="▲" GridPane.columnIndex="2" GridPane.rowIndex="5">
+                     <font>
+                        <Font name="Arial" size="12.0" />
+                     </font>
+                  </Button>
+                  <Button id="green" alignment="CENTER" blendMode="SRC_ATOP" layoutX="136.0" layoutY="263.0" mnemonicParsing="false" onAction="#takeHistoryDown" prefHeight="45.0" prefWidth="50.0" stylesheets="@stylesheet.css" text="▼" GridPane.columnIndex="3" GridPane.rowIndex="5">
+                     <font>
+                        <Font name="Arial" size="12.0" />
+                     </font>
+                  </Button>
+                  <Button id="green" alignment="CENTER" blendMode="SRC_ATOP" layoutX="188.0" layoutY="263.0" mnemonicParsing="false" onAction="#clearHistory" prefHeight="45.0" prefWidth="50.0" stylesheets="@stylesheet.css" text="HC" GridPane.columnIndex="8" GridPane.rowIndex="5">
+                     <font>
+                        <Font name="Arial Black" size="12.0" />
+                     </font>
+                  </Button>
+                  <Button id="green" alignment="CENTER" blendMode="SRC_ATOP" contentDisplay="CENTER" layoutX="79.0" layoutY="163.0" mnemonicParsing="false" onAction="#num" prefHeight="45.0" prefWidth="50.0" stylesheets="@stylesheet.css" text="E" textAlignment="JUSTIFY" textOverrun="CENTER_ELLIPSIS" GridPane.columnIndex="7" GridPane.rowIndex="5">
+                     <font>
+                        <Font name="Arial Black" size="12.0" />
+                     </font>
+                  </Button>
                     </children>
                 </GridPane>
             </children></VBox>
