@@ -16,53 +16,56 @@ public class expression {
 
     private Stack<String> stack;
 
-    private double X;
+    protected double X;
 
 
-    private final static String scopes = "(\\()|(\\))|";
-    private final static String siNco = "(cos)|(sin)|(asin)|(acos)|(tan)|(atan)|(ln)|(log)|(sqrt)";
-    private final static String sings = "(\\+)|(\\-)|(\\*)|(\\^)|(\\%)|(\\/)|" + siNco;
-    private final static  String digits = "(\\d+\\.?(\\d+)?)|";
-    private final static String regular = scopes + digits + sings + "|(X)";
-    private final static Pattern p = Pattern.compile(regular);
+    protected final static String scopes = "(\\()|(\\))|";
+    protected final static String siNco = "(cos)|(sin)|(asin)|(acos)|(tan)|(atan)|(ln)|(log)|(sqrt)";
+    protected final static String sings = "(\\+)|(\\-)|(\\*)|(\\^)|(\\%)|(\\/)|u|U|" + siNco;
+    protected final static String digits = "((\\d+\\.?(\\d+)?(E\\d+)?)|E)|";
+    protected final static String digit = "((\\d+\\.?(\\d+)?(E\\d+)?)|E)";
+    protected final static String regular = scopes + digits + sings + "|(X)";
+    protected final static Pattern p = Pattern.compile(regular);
 
-    private  static Pattern half_p = Pattern.compile("enter x: " + "(\\d+\\.?(\\d+)?)");
+   
    private static  NavigableMap<String, Integer> priority = new TreeMap<String,Integer>()
    {
        private static final long serialVersionUID = 1L;
 
 	{
-           put("(",0);
+           put("(", 0);
            put("", 0);
            put("+", 1);
            put("-", 1);
-           put("u", 1);
            put("*", 2);
            put("/", 2);
            put("%", 2);
            put("^", 3);
-           put("cos", 4);
-           put("sin", 4);
-           put("asin",4);
-           put("acos",4);
-           put("tan",4);
-           put("atan",4);
-           put("ln",4);
-           put("log",4);
-           put("sqrt",4);
+           put("u", 4);
+           put("U", 4);
+           put("cos", 5);
+           put("sin", 5);
+           put("asin", 5);
+           put("acos", 5);
+           put("tan", 5);
+           put("atan", 5);
+           put("ln", 5);
+           put("log", 5);
+           put("sqrt", 5);
 
        }
    };
 
-   expression(String to_parse){
-
-       this.str= new ArrayList<>();
-       this.stack = new Stack<>();
-       this.stack_list = new ArrayList<>();
+   public void rebuild_ex(String to_parse){
+       this.str.clear();
+       this.stack.clear();
+       this.stack_list.clear();
+       half_done = false; 
        parse(to_parse);
    }
+   
    expression() {
-       this.str= new ArrayList<>();
+       this.str = new ArrayList<>();
        this.stack = new Stack<>();
        this.stack_list = new ArrayList<>();
    }
@@ -76,36 +79,33 @@ public class expression {
 
         while(i-- > 0)
             stack.push(stack_list.get(i));
-        stack_list.clear();
+        //stack_list.clear();
         //stack = second_stack;
         //if (!x_pos.isEmpty())
            // half_done = true;
 
     }
     public void parse_half(String for_parse) {
-
-
-       String somestr = new String();
-        Matcher m = half_p.matcher(for_parse);
-        if (m.matches())
-           somestr = for_parse.replaceAll("enter x: ", "");
-        //for(String str: stack_list)
-                //Collections.replaceAll(stack_list,"X",for_parse);
-        X = Double.valueOf(somestr);
+       String substr = new String();
+       Pattern dig = Pattern.compile(digit);
+       Matcher m = dig.matcher(for_parse);
+       while(m.find())
+    	   substr = for_parse.substring(m.start(), m.end());
+        X = Double.valueOf(substr);
               //  stack.pop();
                 //stack.push(str);
             //
           //}
     }
     private void sign_sort(String sign, Stack<String> second_stack) {
-        if (priority.get(second_stack.peek()) <= priority.get(sign))
+        if (priority.get(second_stack.peek()) < priority.get(sign))
             second_stack.push(sign);
         else {
             stack_list.add(second_stack.pop());
             second_stack.push(sign);
         }
     }
-    private void parse(String for_parse){
+    protected void parse(String for_parse){
 
         Stack<String> second_stack = new Stack<>();
         //ArrayList<String> second_stack = new ArrayList<>();
@@ -128,29 +128,44 @@ public class expression {
                 second_stack.pop();
             }
             else if (str.get(i).matches(sings)) {
-                if(str.get(i).matches("-") && !(str.get(i - 1).matches(digits) || str.get(i - 1).matches("(\\))")))
+                if(str.get(i).matches("\\-") && (i == 0 
+                		|| !(str.get(i - 1).matches(digits) || str.get(i - 1).matches("(\\))"))))
                     sign_sort("u", second_stack);
+                else if(str.get(i).matches("\\+") && (i == 0 
+                		|| !(str.get(i - 1).matches(digits) || str.get(i - 1).matches("(\\))"))))
+                    sign_sort("U", second_stack);
                 else
                     sign_sort(str.get(i), second_stack);
             }
         }
         while (!second_stack.isEmpty())
             stack_list.add(second_stack.pop());
-        for(String str : stack_list)
-                if(str.equals("X"))
-                    half_done = true;
+       //X_pre();
              //return second_stack;
         reverse_stack();
     }
 
-    public  double calc(){
+    
+    protected  void  X_pre() {
+    	 for(String str : stack_list)
+             if(str.equals("X"))
+                 half_done = true;
+    }
+    
+    public  Double calc(){
         //parse(for_parse);
         double temp;
         Stack <Double> digit_stack = new Stack<>();
         digit_stack.push(0.0);
         while (stack.peek() != "") {
-            if (stack.peek().matches(digits))
-                digit_stack.push(Double.valueOf(stack.pop()));
+            if (stack.peek().matches(digits)) {
+            	if (stack.peek().matches("E")) {
+            		digit_stack.push(2.71828183);
+            		stack.pop();
+            	}
+            	else
+            		digit_stack.push(Double.valueOf(stack.pop()));
+            }
             else if(stack.peek().matches("X")) {
                 digit_stack.push(X);
                 stack.pop();
@@ -168,9 +183,11 @@ public class expression {
                     case "u":
                         digit_stack.push(-digit_stack.pop());
                         break;
+                    case "U":
+                        break;
                     case "/":
                         temp = digit_stack.pop();
-                        digit_stack.push(digit_stack.pop() * temp);
+                        digit_stack.push(digit_stack.pop() / temp);
                         break;
                     case "*":
                         digit_stack.push(digit_stack.pop() * digit_stack.pop());
