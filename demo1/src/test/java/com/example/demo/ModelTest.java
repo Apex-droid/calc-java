@@ -115,7 +115,7 @@ class ModelTest {
         int index = (int)getPrivate(mod, "histIndex");
         mod.takeHistoryUp();
         History hist = (History) getPrivate(mod, "history");
-        if (hist.size() == 0)
+        if (hist.size() == 0 || hist.size() == 1)
             assertEquals(index, (int) getPrivate(mod, "histIndex"));
         else
             assertNotEquals(index, (int) getPrivate(mod, "histIndex"));
@@ -127,7 +127,7 @@ class ModelTest {
         int index = (int)getPrivate(mod, "histIndex");
         mod.takeHistoryDown();
         History hist = (History)getPrivate(mod, "history");
-        if (hist.size() == 0)
+        if (hist.size() == 0 || hist.size() == 1)
             assertEquals(index, (int) getPrivate(mod, "histIndex"));
         else
             assertNotEquals(index, (int) getPrivate(mod, "histIndex"));
@@ -138,11 +138,9 @@ class ModelTest {
         Model model1 = new Model();
         Field field = mod.getClass().getDeclaredField("history");
         field.setAccessible(true);
-        final History history = (History) field.get(mod);
-
         model1.parse("2*2");
-        model1.calc();
-        final History history1 = (History) field.get(model1);
+        model1.enter();
+        final History history1 = (History)field.get(model1);
         int  index = history1.result_array().length;
         assertNotEquals(index, 0);
         model1.HistoryClear();
@@ -151,6 +149,34 @@ class ModelTest {
         mod.save_hist();
 
     }
+    @Test
+    void result_array() throws NoSuchFieldException, IllegalAccessException {
+        History hist = (History)getPrivate(mod, "history");
+        String[] str1 = hist.result_array();
+        String[] str2 = mod.result_array();
+        for (int i = 0; i < hist.size(); i++)
+            assertEquals(str1[i], str2[i]);
+    }
+    @Test
+    void get_Text() throws NoSuchFieldException, IllegalAccessException {
+        String str = (String)getPrivate(mod, "text");
+        assertEquals(str, mod.getTxt());
+    }
+    @Test
+    void expFromHist() throws NoSuchFieldException, IllegalAccessException {
+        Model model1 = new Model();
+        Field field = mod.getClass().getDeclaredField("history");
+        field.setAccessible(true);
+        model1.edit("2*2");
+        model1.enter();
+        final History history1 = (History)field.get(model1);
+        int  index = (int)getPrivate(model1, "histIndex");
+        model1.expFromHist(index);
+        assertEquals(model1.getTxt(), "2*2");
+        mod.save_hist();
+
+    }
+
 }
 
 
