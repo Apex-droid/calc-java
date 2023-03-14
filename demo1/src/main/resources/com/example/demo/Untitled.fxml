@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<Pane id="shiny" prefHeight="630.0" prefWidth="578.0" stylesheets="@stylesheet.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo.Controller">
+   <children>
+      <VBox layoutX="47.0" layoutY="26.0" prefHeight="519.0" prefWidth="496.0">
+         <children>
+            <Label id="greenn" stylesheets="@style.css" text="Чтобы вычислить выражение не содержащее неизвестую переменную необходимо, ввести коррекную комбинацию цифр и математических знаков и нажать кнопку &quot;=&quot;. " textAlignment="CENTER" wrapText="true">
+               <opaqueInsets>
+                  <Insets left="10.0" right="10.0" />
+               </opaqueInsets>
+            </Label>
+            <Label id="greenn" stylesheets="@style.css" text="Чтобы вычислить выражение содержащее неизвестную переменную нужно ввести коррекную комбинацию чисел, символов Х обозначающих переменную и математических символов, нажать кнопку равно, после ввести число, которое будет подставлено вместо Х в процессе вычисления выражения и снова нажать кнопку   &quot;=&quot;." textAlignment="CENTER" wrapText="true">
+               <opaqueInsets>
+                  <Insets left="10.0" right="10.0" />
+               </opaqueInsets>
+            </Label>
+            <Label id="greenn" alignment="TOP_LEFT" stylesheets="@style.css" text="Чтобы отобразить график функции Y oт X нееобходимо ввести правую часть функции и нажать кнопку &quot;GR&quot; после  чего нажать &quot;show graph&quot;. Чтобы вернуться на экран калькулятора необходимо нажать кнопку &quot;to calculator&quot;." textAlignment="CENTER" wrapText="true" />
+            <Label id="greenn" alignment="TOP_LEFT" stylesheets="@style.css" text="Чтобы удалить всю введенную строку или полученный результат нужно нажать кнопку  &quot;С&quot;." textAlignment="CENTER" wrapText="true">
+               <opaqueInsets>
+                  <Insets left="5.0" right="5.0" />
+               </opaqueInsets>
+            </Label>
+            <Label id="greenn" alignment="TOP_LEFT" stylesheets="@style.css" text="Чтобы отобразить историю операций необходимо нажать кнопку &quot;Н&quot;. При отсутствии предыдущих вычислениий или предшествующей очистке истории пустой список не будет отображен. При нажатии на одно из выражений в списке предлыдущих вычислений оно будет отображено в строке ввода, а предыдущие введенные данные в ней сотруться. " textAlignment="CENTER" wrapText="true" />
+            <Label id="greenn" alignment="CENTER" prefHeight="25.0" prefWidth="476.0" stylesheets="@style.css" text="       Чтобы очистить историю необходимо нажать кнопку &quot;HC&quot;. " textAlignment="CENTER" wrapText="true" />
+            <Label id="greenn" alignment="TOP_LEFT" stylesheets="@style.css" text="Чтобы отобразить в строке ввода предыдущую операцию необходимо нажать кнопку  &quot;↑&quot;.  Чтобы передвигаться выше по списку операций необходимо нажимать кнопку &quot;↑&quot; повторно.  При нажатии  &quot;↓&quot;вы будете передвигатся ниже по списку. При достижении вернего края списка и нажатии кнопки  &quot;↑&quot; вы окажетесь на противополойном крае, точно так же только наоборот это работает и с кнопкой &quot;↓&quot;." textAlignment="CENTER" wrapText="true" />
+            <Label id="greenn" alignment="TOP_LEFT" layoutX="20.0" layoutY="450.0" stylesheets="@style.css" text="Чтобы удалить один  крайний символ в введенной строке или полученном результате необходимо нажать кнопку &quot;&lt;-&quot;" textAlignment="CENTER" wrapText="true" />
+         </children>
+         <padding>
+            <Insets left="10.0" right="10.0" />
+         </padding>
+      </VBox>
+      <Button id="yellow" layoutX="122.0" layoutY="557.0" mnemonicParsing="false" onAction="#switchToScene1" prefHeight="51.0" prefWidth="346.0" text="вернуться к калькулятору">
+         <font>
+            <Font name="Arial Italic" size="7.0" />
+         </font>
+      </Button>
+   </children>
+</Pane>
