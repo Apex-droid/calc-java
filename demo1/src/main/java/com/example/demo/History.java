@@ -13,10 +13,10 @@ import javafx.collections.transformation.SortedList;
 public class History implements Serializable {
 
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = 4535807739056886842L;
-	History() {
+    * 
+    */
+    private static final long serialVersionUID = 4535807739056886842L;
+    History() {
         size = 0;
     }
     private int size;
@@ -29,7 +29,7 @@ public class History implements Serializable {
     public void add_res(String res) {
         results.add(operations.get(this.size - 1) + "=" + res);
     }
-    public void clear(){
+    public void clear() {
         operations.clear();
         results.clear();
         size = 0;
@@ -37,11 +37,10 @@ public class History implements Serializable {
     public String[] result_array() {
         return (String[]) (results.toArray(new String[0]));
     }
-    int size(){
+    int size() {
         return size;
     }
-    public String get_operation(int i){
-    	return (operations.get(i));
+    public String get_operation(int i) {
+        return (operations.get(i));
     }
-   
 }
