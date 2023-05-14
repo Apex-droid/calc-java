@@ -16,9 +16,9 @@ public class Model extends expression {
     private History history = new History();
     private int histIndex;
      Model() {
-    	 File file = new File("/Users/ahelper/Documents/save.ser");
+    	 File file = new File("/Users/"+ System.getProperty("user.name") +"/Documents/save.ser");
     	  if (file.exists() && !file.isDirectory())
-    	 try (FileInputStream fileInputStream = new FileInputStream("/Users/ahelper/Documents/save.ser");
+    	 try (FileInputStream fileInputStream = new FileInputStream("/Users/" + System.getProperty("user.name") +"/Documents/save.ser");
                  ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream))
             { history = (History) objectInputStream.readObject();}
             catch (IOException | ClassNotFoundException e) {
@@ -143,7 +143,7 @@ public class Model extends expression {
         //ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
         //History savedGame = (History) objectInputStream.readObject();
     	 
-        try (FileOutputStream fileOutputStream = new FileOutputStream("/Users/ahelper/Documents/save.ser");
+        try (FileOutputStream fileOutputStream = new FileOutputStream("/Users/"+ System.getProperty("user.name") +"/Documents/save.ser");
             ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream))
         {objectOutputStream.writeObject(history);}
         catch (IOException e) {

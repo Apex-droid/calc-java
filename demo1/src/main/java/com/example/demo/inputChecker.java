@@ -26,7 +26,7 @@ public class inputChecker {
 	"|" + sin_co + ")";
 	private static String powE = "((\\^)" +  "(" + hp_sign + "|(\\^)" + "|" + scopeC + "))";
 	private static String three_lpE = lp_sign + lp_sign + lp_sign;
-	private static String end = "^(.+?(" + hp_sign +  "|" + lp_sign + "|" + scopeO + "|" + sin_co + "))$";
+	private static String end = "^(.+?(" + hp_sign +  "|" + lp_sign + "|" +  "(\\^)"  + "|" + scopeO + "|" + sin_co + "))$";
 	private static String begin =  "(?<=^)(" + hp_sign +  "|" + scopeC + ")";
 	private static String ExpRegex = lpSingE +  "|" + hpSingE +   
 	"|" + DE +  "|" + XE +  "|" + scopeOE + "|" + end + "|" + begin 
@@ -55,12 +55,15 @@ public class inputChecker {
 	public static boolean Check(String exp)
 	{
 		Matcher m = p.matcher(exp);
-		if (scopeCheck(exp))
+		if (scopeCheck(exp)) {
 			if (m.find())
 				return false;
-			if(!(symbolsOrdering("[a-z]+", sin_co , exp) && symbolsOrdering(dig_sy, digit , exp)))
+			if (!(symbolsOrdering("[a-z]+", sin_co, exp) && symbolsOrdering(dig_sy, digit, exp)))
 				return false;
-			return true;
+		}
+		else
+			return false;
+		return true;
 	}
 	public static boolean halfCheck(String exp){
 		 Matcher m = half_p.matcher(exp);
