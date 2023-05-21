@@ -128,11 +128,11 @@ public class expression {
                 second_stack.pop();
             }
             else if (str.get(i).matches(sings)) {
-                if(str.get(i).matches("\\-") && (i == 0 
-                		|| !(str.get(i - 1).matches(digits) || str.get(i - 1).matches("(\\))"))))
+                if(str.get(i).matches("\\-") && (i != 0
+                		&& (!(str.get(i - 1).matches(digits) || str.get(i - 1).matches("(\\))")))))
                     sign_sort("u", second_stack);
-                else if(str.get(i).matches("\\+") && (i == 0 
-                		|| !(str.get(i - 1).matches(digits) || str.get(i - 1).matches("(\\))"))))
+                else if(str.get(i).matches("\\+") && (i != 0
+                		&& (!(str.get(i - 1).matches(digits) || str.get(i - 1).matches("(\\))")))))
                     sign_sort("U", second_stack);
                 else
                     sign_sort(str.get(i), second_stack);
